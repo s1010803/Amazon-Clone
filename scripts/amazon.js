@@ -19,10 +19,10 @@ const products = [
   },
 ];
 
-let productsHTML = '';
+const productsHTML = products.map(generateHTML).join('');
 
-products.forEach((product) => {
-  productsHTML += `
+function generateHTML(product) {
+  return `
     <div class="product-container">
       <div class="product-image-container">
         <img class="product-image"
@@ -72,6 +72,6 @@ products.forEach((product) => {
       </button>
     </div>
   `;
-});
+}
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
