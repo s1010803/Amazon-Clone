@@ -46,11 +46,30 @@ function generateHTML(product) {
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary">
+      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${
+        product.id
+      }">
         Add to Cart
       </button>
     </div>
   `;
 }
 
-document.querySelector('.js-products-grid').innerHTML = productsHTML;
+const productsGrid = document.querySelector('.js-products-grid');
+
+productsGrid.innerHTML = productsHTML;
+
+productsGrid.addEventListener('click', (e) => {
+  if (e.target.matches('.js-add-to-cart')) {
+    const productId = e.target.dataset.productId;
+    const existingProduct = cart.find(item => item.id === productId);
+
+    if (existingProduct) {
+      existingProduct.quantity++;
+    } else {
+      cart.push({ id: productId, quantity: 1})
+    }
+
+    console.log(cart);
+  }
+});
