@@ -33,3 +33,10 @@ export function updateCart(productId, quantity) {
     cart.push({ id: productId, quantity });
   }
 }
+
+export function removeFromCart(productId) {
+  const newCart = cart.filter((cartItem) => cartItem.productId !== productId);
+
+  cart.length = 0;
+  cart.push(...newCart);
+}

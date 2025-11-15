@@ -1,4 +1,4 @@
-import { cart } from '../data/cart.js';
+import { cart, removeFromCart } from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
@@ -33,7 +33,7 @@ function generateHTML(cartItem) {
             <span class="update-quantity-link link-primary">
               Update
             </span>
-            <span class="delete-quantity-link link-primary">
+            <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
               Delete
             </span>
           </div>
@@ -88,4 +88,16 @@ function generateHTML(cartItem) {
   `;
 }
 
-document.querySelector('.order-summary').innerHTML = cartItemHTML;
+const orderSummary = document.querySelector('.order-summary')
+
+orderSummary.innerHTML = cartItemHTML;
+
+orderSummary.addEventListener('click', (e) => {
+  if (e.target.matches('.js-delete-link')) {
+    const productId =  e.target.dataset.productId;
+    removeFromCart(productId);
+    
+  }
+
+
+});
