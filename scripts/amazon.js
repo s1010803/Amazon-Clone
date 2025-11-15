@@ -1,3 +1,4 @@
+import { products } from '../data/products.js';
 import { cart } from '../data/cart.js';
 
 const productsHTML = products.map(generateHTML).join('');
