@@ -1,5 +1,5 @@
 import { products } from '../data/products.js';
-import { cart } from '../data/cart.js';
+import { cart, getProductInfo, updateCart } from '../data/cart.js';
 
 const productsHTML = products.map(generateHTML).join('');
 
@@ -63,28 +63,21 @@ const productsGrid = document.querySelector('.js-products-grid');
 productsGrid.innerHTML = productsHTML;
 
 productsGrid.addEventListener('click', (e) => {
-  if (e.target.matches('.js-add-to-cart')) {
-    const productId = e.target.dataset.productId;
+  if (!e.target.matches('.js-add-to-cart')) return;
 
-    //NOTE: find the parent container element first
-    const productQuantityContainer = e.target.closest('.product-container');
-    //NOTE: then take the select element inside the container
-    const quantitySelect = productQuantityContainer.querySelector(
-      '.product-quantity-container select'
-    );
-    //NOTE: get the option value from the select element
-    const quantity = Number(quantitySelect.value);
+  const { productId, quantity } = getProductInfo(e.target);
 
-    const existingProduct = cart.find((item) => item.id === productId);
+  updateCart(productId, quantity);
 
-    if (existingProduct) {
-      existingProduct.quantity += quantity;
-    } else {
-      cart.push({ id: productId, quantity });
-    }
-
-    let cartQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-
-    document.querySelector('.js-cart-quantity').textContent = cartQuantity;
-  }
+  updateCartDisplay();
 });
+
+function getCartQuantity(cart) {
+  return cart.reduce((total, item) => total + item.quantity, 0);
+}
+
+function updateCartDisplay() {
+  const cartQuantity = getCartQuantity(cart);
+
+  document.querySelector('.js-cart-quantity').textContent = cartQuantity;
+}
