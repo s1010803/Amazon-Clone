@@ -10,7 +10,9 @@ function generateHTML(cartItem) {
   let matchingProduct = products.find((product) => product.id === productId);
 
   return `
-    <div class="cart-item-container">
+    <div class="cart-item-container js-cart-item-container-${
+      matchingProduct.id
+    }">
       <div class="delivery-date">
         Delivery date: Tuesday, June 21
       </div>
@@ -33,7 +35,9 @@ function generateHTML(cartItem) {
             <span class="update-quantity-link link-primary">
               Update
             </span>
-            <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
+            <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${
+              matchingProduct.id
+            }">
               Delete
             </span>
           </div>
@@ -88,16 +92,14 @@ function generateHTML(cartItem) {
   `;
 }
 
-const orderSummary = document.querySelector('.order-summary')
+const orderSummary = document.querySelector('.order-summary');
 
 orderSummary.innerHTML = cartItemHTML;
 
 orderSummary.addEventListener('click', (e) => {
   if (e.target.matches('.js-delete-link')) {
-    const productId =  e.target.dataset.productId;
+    const productId = e.target.dataset.productId;
     removeFromCart(productId);
-    
+    e.target.closest(`.js-cart-item-container-${productId}`).remove();
   }
-
-
 });
