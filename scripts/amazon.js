@@ -6,7 +6,7 @@ const productsHTML = products.map(generateHTML).join('');
 
 function generateHTML(product) {
   return `
-    <div class="product-container">
+    <div class="product-container js-product-container" data-product-id="${product.id}">
       <div class="product-image-container">
         <img class="product-image"
           src="${product.image}">

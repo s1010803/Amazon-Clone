@@ -10,9 +10,7 @@ function generateHTML(cartItem) {
   let matchingProduct = products.find((product) => product.id === productId);
 
   return `
-    <div class="cart-item-container js-cart-item-container-${
-      matchingProduct.id
-    }">
+    <div class="cart-item-container js-cart-item-container" data-product-id="${matchingProduct.id}">
       <div class="delivery-date">
         Delivery date: Tuesday, June 21
       </div>
@@ -97,9 +95,13 @@ const orderSummary = document.querySelector('.order-summary');
 orderSummary.innerHTML = cartItemHTML;
 
 orderSummary.addEventListener('click', (e) => {
-  if (e.target.matches('.js-delete-link')) {
-    const productId = e.target.dataset.productId;
-    removeFromCart(productId);
-    e.target.closest(`.js-cart-item-container-${productId}`).remove();
-  }
+  const deleteBtn = e.target.closest('.js-delete-link');
+  if (!deleteBtn) return;
+
+  const productId = deleteBtn.dataset.productId;
+
+  removeFromCart(productId);
+
+  const container = deleteBtn.closest('.js-cart-item-container');
+  container.remove();
 });

@@ -1,4 +1,4 @@
-export const cart = [
+export const cart = JSON.parse(localStorage.getItem('cart')) ?? [
   {
     productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
     quantity: 2,
@@ -9,11 +9,15 @@ export const cart = [
   },
 ];
 
+function saveToStorage() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
 export function getProductInfo(product) {
   const productId = product.dataset.productId;
 
   //NOTE: find the parent container element first
-  const productQuantityContainer = product.closest('.product-container');
+  const productQuantityContainer = product.closest('.js-product-container');
   //NOTE: then take the select element inside the container
   const quantitySelect = productQuantityContainer.querySelector(
     '.product-quantity-container select'
@@ -25,18 +29,23 @@ export function getProductInfo(product) {
 }
 
 export function updateCart(productId, quantity) {
-  const existingProduct = cart.find((item) => item.id === productId);
+  const existingProduct = cart.find((item) => item.productId === productId);
 
   if (existingProduct) {
     existingProduct.quantity += quantity;
   } else {
-    cart.push({ id: productId, quantity });
+    cart.push({ productId, quantity });
   }
+
+  saveToStorage();
 }
 
 export function removeFromCart(productId) {
-  const newCart = cart.filter((cartItem) => cartItem.productId !== productId);
+  const index = cart.findIndex((item) => item.productId === productId);
 
-  cart.length = 0;
-  cart.push(...newCart);
+  if (index !== -1) {
+    cart.splice(index, 1);
+  }
+
+  saveToStorage();
 }
