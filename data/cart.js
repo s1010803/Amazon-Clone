@@ -51,3 +51,12 @@ export function removeFromCart(productId) {
 
   saveToStorage();
 }
+
+
+export function updateDeliveryOption(productId, deliveryOptionId) {
+  const existingProduct = cart.find((item) => item.productId === productId);
+
+  existingProduct.deliveryOptionId = deliveryOptionId;
+
+  saveToStorage();
+}
