@@ -16,3 +16,5 @@ export const deliveryOptions = [
   },
 ];
 
+export const findDeliveryOption = (id) =>
+  deliveryOptions.find((o) => o.id === id);

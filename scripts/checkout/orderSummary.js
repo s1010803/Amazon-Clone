@@ -2,15 +2,11 @@ import { cart, removeFromCart, updateDeliveryOption } from '../../data/cart.js';
 import { products } from '../../data/products.js';
 import formatCurrency from '../utils/money.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import { deliveryOptions } from '../../data/deliveryOptions.js';
+import { deliveryOptions, findDeliveryOption } from '../../data/deliveryOptions.js';
+import { findProduct } from '../../data/products.js';
 
 // ---- Utility Functions ---- //
-const formatDate = (days) =>
-  dayjs().add(days, 'days').format('dddd, MMMM D');
-
-const findProduct = (id) => products.find((p) => p.id === id);
-const findDeliveryOption = (id) =>
-  deliveryOptions.find((o) => o.id === id);
+const formatDate = (days) => dayjs().add(days, 'days').format('dddd, MMMM D');
 
 // ---- Rendering ---- //
 export function renderOrderSummary() {
@@ -118,5 +114,3 @@ function handleDeliveryChange(e) {
   updateDeliveryOption(productId, deliveryOptionId);
   renderOrderSummary(); // re-render UI
 }
-
-
