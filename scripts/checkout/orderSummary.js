@@ -4,6 +4,7 @@ import formatCurrency from '../utils/money.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { deliveryOptions, findDeliveryOption } from '../../data/deliveryOptions.js';
 import { findProduct } from '../../data/products.js';
+import { renderPaymentSummary } from './paymentSummary.js';
 
 // ---- Utility Functions ---- //
 const formatDate = (days) => dayjs().add(days, 'days').format('dddd, MMMM D');
@@ -105,6 +106,8 @@ function handleDelete(e) {
   removeFromCart(productId);
 
   deleteBtn.closest('.js-cart-item-container').remove();
+
+  renderPaymentSummary(); // re-render UI
 }
 
 function handleDeliveryChange(e) {
@@ -113,4 +116,5 @@ function handleDeliveryChange(e) {
   const { productId, deliveryOptionId } = e.target.dataset;
   updateDeliveryOption(productId, deliveryOptionId);
   renderOrderSummary(); // re-render UI
+  renderPaymentSummary(); // re-render UI
 }
