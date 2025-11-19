@@ -1,11 +1,14 @@
-import { products } from '../data/products.js';
+import { products, loadProducts } from '../data/products.js';
 import { cart, getProductInfo, updateCart } from '../data/cart.js';
 import formatCurrency from './utils/money.js';
 
-const productsHTML = products.map(generateHTML).join('');
+loadProducts(renderProductsGrid);
 
-function generateHTML(product) {
-  return `
+function renderProductsGrid() {
+  const productsHTML = products.map(generateHTML).join('');
+
+  function generateHTML(product) {
+    return `
     <div class="product-container js-product-container" data-product-id="${
       product.id
     }">
@@ -61,30 +64,31 @@ function generateHTML(product) {
       </button>
     </div>
   `;
-}
+  }
 
-const productsGrid = document.querySelector('.js-products-grid');
+  const productsGrid = document.querySelector('.js-products-grid');
 
-productsGrid.innerHTML = productsHTML;
-
-updateCartDisplay();
-
-productsGrid.addEventListener('click', (e) => {
-  if (!e.target.matches('.js-add-to-cart')) return;
-
-  const { productId, quantity } = getProductInfo(e.target);
-
-  updateCart(productId, quantity);
+  productsGrid.innerHTML = productsHTML;
 
   updateCartDisplay();
-});
 
-function getCartQuantity(cart) {
-  return cart.reduce((total, item) => total + item.quantity, 0);
-}
+  productsGrid.addEventListener('click', (e) => {
+    if (!e.target.matches('.js-add-to-cart')) return;
 
-function updateCartDisplay() {
-  const cartQuantity = getCartQuantity(cart);
+    const { productId, quantity } = getProductInfo(e.target);
 
-  document.querySelector('.js-cart-quantity').textContent = cartQuantity;
+    updateCart(productId, quantity);
+
+    updateCartDisplay();
+  });
+
+  function getCartQuantity(cart) {
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  function updateCartDisplay() {
+    const cartQuantity = getCartQuantity(cart);
+
+    document.querySelector('.js-cart-quantity').textContent = cartQuantity;
+  }
 }
